@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { jwtDecode } from 'jwt-decode';
 import FreeTuitionImage from "./assets/FTimage.png";
 import EaristLogo from "./assets/EaristLogo.png";
 
@@ -28,31 +29,20 @@ useEffect(() => {
         .get("http://localhost:5000/api/data")
         .then((response) => {
           console.log("Fetched Data:", response.data); 
-          setData(response.data);
+          setdata(response.data);
           
-console.log("All employee IDs in data:", 
-            response.data.map(item => item.employeeID || "undefined"));
-          
-          console.log("Employee Number from token:", employeeNum);
-          console.log("Employee Number type:", typeof employeeNum);
-        
-          const filteredData = response.data.filter((item) => {
-            console.log("Comparing:", item.employeeID, employeeNum);
-            console.log("Types:", typeof item.employeeID, typeof employeeNum);
-            return String(item.employeeID) === String(employeeNum);
-          });
-          
-          console.log("Filtered Data:", filteredData);
-            
         })
+            
+        
         .catch((error) => {
           console.error("Error fetching data:", error);
         });
     }, []);
 
 
-const filteredData = data.filter((item) => String(item.employeeID) === String(employeeNum));
+  const filteredData = data.filter((item) => String(item.employeeID) === String(employeeNum));
 
+  console.log("Filtered Data:", filteredData);
 
   const handleSignatureUpload = (event) => {
     const file = event.target.files[0];
@@ -193,8 +183,6 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     <tbody>
                       <tr>
                        
-
-
                         <td style={{ width: "20%", textAlign: "center" }}>
                           <img src={EaristLogo} alt="Earist Logo" style={{marginLeft: "25px", width: "150px", height: "110px" }} />
                         </td>
@@ -318,7 +306,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
               </tr>
               <tr>
                 <td
-                  colSpan={42}
+                  colSpan={40}
                   style={{
                     height: "0.2in",
                     fontSize: "72.5%",
@@ -336,12 +324,9 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                   </b>
                 </td>
               </tr>
+              
+
               <tr>
-
-
-              </tr>
-
-
               <td
                 colSpan={4}
                 style={{
@@ -371,7 +356,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                 <input
                   type="text"
                   value={studentData.student_no || ""}
-                    readOnly
+                
                   style={{
                     fontFamily: "Arial",
                     color: "black",
@@ -413,8 +398,8 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
               >
                 <input
                   type="text"
-                  value={studentData.college ||""}
-                    readOnly
+                  value={studentData.college || ""}
+                   
                   style={{
                     color: "black",
                     width: "98%",
@@ -426,6 +411,8 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                   }}
                 />
               </td>
+              </tr>
+
               <tr>
                 <td
                   colSpan={3}
@@ -461,7 +448,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                   <input
                     type="text"
                     value={studentData.name || ""}
-                      readOnly
+                     
                     style={{
                       color: "black",
                       width: "98%",
@@ -507,7 +494,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                   <input
                     type="text"
                     value={studentData.program || ""}
-                      raedOnly
+                      
                     style={{
                       color: "black",
                       width: "98%",
@@ -555,7 +542,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                   <input
                     type="text"
                     value={studentData.gender || ""}
-                      readOnly
+                      
                     style={{
                       color: "black",
                       width: "98%",
@@ -568,7 +555,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                   />
                 </td>
                 <td
-                  colSpan={10}
+                  colSpan={11}
                   style={{
                     fontSize: "50%",
                   }}
@@ -621,7 +608,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                    <input
                       type="text"
                       value={studentData.curriculum || ""}
-                        readOnly
+                      
                       style={{
                         color: "black",
                         fontFamily: 'Arial, sans-serif',
@@ -668,7 +655,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                   <input
                     type="text"
                     value={studentData.age || ""}
-                      readOnly
+                     
                     style={{
                       color: "black",
                       width: "98%",
@@ -710,7 +697,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                   <input
                     type="text"
                     value={studentData.year_level || ""}
-                      readOnly
+                    
                     style={{
                       fontFamily: 'Arial, sans-serif',
                       fontSize: '12px',
@@ -753,7 +740,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     <input
                       type="text"
                       value={studentData.scholarship_discount || ""}
-                        readOnly
+                       
                       style={{
                         color: "black",
                         width: "100%",
@@ -818,7 +805,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
 
 
                 <td
-                  colSpan={5}
+                  colSpan={7}
                   rowSpan={2}
                   style={{
                     color: "black",
@@ -836,7 +823,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                   CODE
                 </td>
                 <td
-                  colSpan={11}
+                  colSpan={8}
                   rowSpan={2}
                   style={{
                     color: "black",
@@ -861,8 +848,6 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     fontFamily: 'Arial, sans-serif',
                     fontSize: '12px',
                     fontWeight: "bold",
-
-
                     backgroundColor: "gray",
                     border: "1px solid black",
                     textAlign: "center",
@@ -873,7 +858,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
 
 
                 <td
-                  colSpan={6}
+                  colSpan={5}
                   rowSpan={2}
                   style={{
                     color: "black",
@@ -881,8 +866,6 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     fontFamily: 'Arial, sans-serif',
                     fontSize: '12px',
                     fontWeight: "bold",
-
-
                     backgroundColor: "gray",
                     border: "1px solid black",
                     textAlign: "center",
@@ -916,8 +899,6 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     fontFamily: 'Arial, sans-serif',
                     fontSize: '12px',
                     fontWeight: "bold",
-
-
                     backgroundColor: "gray",
                     border: "1px solid black",
                     textAlign: "center",
@@ -989,7 +970,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                 return (
                   <tr key={index}>
                     <td
-                      colSpan={5}
+                      colSpan={7}
                       style={{
                         height: "0.25in",
                         fontSize: "62.5%",
@@ -999,6 +980,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       <input
                         type="text"
                         value={item.Code || ""}
+                         
                         style={{
                           color: "black",
                           width: "98%",
@@ -1019,6 +1001,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       <input
                         type="text"
                         value={item.subject_title || ""}
+                          
                         style={{
                           color: "black",
                           width: "98%",
@@ -1040,6 +1023,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       <input
                         type="text"
                         value={item.lec_units || ""}
+                          
                         style={{
                           color: "black",
                           width: "98%",
@@ -1061,6 +1045,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       <input
                         type="text"
                         value={item.lab_units || ""}
+                          
                         style={{
                           color: "black",
                           width: "98%",
@@ -1071,7 +1056,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       />
                     </td>
                     <td
-                      colSpan={1}
+                      colSpan={2}
                       style={{
                         height: "0.25in",
                         fontSize: "52.5%",
@@ -1081,6 +1066,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       <input
                         type="text"
                         value={item.credit_units || ""}
+                          
                         style={{
                           color: "black",
                           width: "98%",
@@ -1092,7 +1078,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       />
                     </td>
                     <td
-                      colSpan={1}
+                      colSpan={2}
                       style={{
                         height: "0.25in",
                         fontSize: "52.5%",
@@ -1102,6 +1088,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       <input
                         type="text"
                         value={item.tuition_units || ""}
+                          
                         style={{
                           color: "black",
                           width: "98%",
@@ -1114,7 +1101,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       />
                     </td>
                     <td
-                      colSpan={4}
+                      colSpan={5}
                       style={{
                         height: "0.25in",
                         fontSize: "52.5%",
@@ -1124,6 +1111,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       <input
                         type="text"
                         value={item.subject_section || ""}
+                         
                         style={{
                           color: "black",
                           width: "98%",
@@ -1136,7 +1124,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       />
                     </td>
                     <td
-                      colSpan={8}
+                      colSpan={7}
                       style={{
                         height: "0.25in",
                         fontSize: "52.5%",
@@ -1146,6 +1134,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       <input
                         type="text"
                         value={item.subject_schedule_room || ""}
+                          
                         style={{
                           color: "black",
                           width: "98%",
@@ -1158,7 +1147,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       />
                     </td>
                     <td
-                      colSpan={8}
+                      colSpan={7}
                       style={{
                         height: "0.25in",
                         fontSize: "52.5%",
@@ -1168,6 +1157,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       <input
                         type="text"
                         value={item.subject_faculty || ""}
+                         
                         style={{
                           color: "black",
                           width: "98%",
@@ -1186,7 +1176,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
 
               <tr>
                 <td
-                  colSpan={10}
+                  colSpan={9}
                   style={{
                     height: "0.1in",
                     fontSize: "55%",
@@ -1368,43 +1358,38 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                 </tr>
 
                 <tr>
-                  <td
-                    colSpan={20}
+                <td
+                  colSpan={19}
+                  style={{
+                    fontSize: "62.5%",
+                    border: "1px solid black",
+                    backgroundColor: "gray",
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={"A S S E S S E D  F E E S"}
                     style={{
-  
-                      fontSize: "62.5%",
-                      border: "1px solid black",
-                      backgroundColor: "gray",
+                      color: "black",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      width: "98%",
+                      border: "none",
+                      outline: "none",
+                      background: "none",
                     }}
-                  >
-                    <input
-                      type="text"
-                      value={"A S S E S S E D  F E E S"}
-                      style={{
-                        color: "black",
-                        fontWeight: "bold",
-                        textAlign: "center",
-                        width: "98%",
-                        border: "none",
-                        outline: "none",
-                        background: "none"
-                      }}
-                    />
-                  </td>
-
+                  />
+                </td>
                 <td
                   colSpan={8}
                   style={{
-                    color: "white",
                     fontSize: "62.5%",
                     color: "black",
                     border: "1px 0px 1px 1px solid black",
                     textAlign: "center",
                   }}
-                >
-                </td>
+                ></td>
               </tr>
-
               <tr>
                 <td
                   colSpan={15}
@@ -1414,39 +1399,40 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                 >
                   <input
                     type="text"
-                    value={"Tuition (21 unit(s)) "}
+                    value={"Tuition (20 unit(s)) "}
                     style={{
                       color: "black",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
                 <td
-                  colSpan={5}
+                  colSpan={4}
                   style={{
                     fontSize: "62.5%",
+
                     borderRight: "1px solid black",
                   }}
                 >
                   <input
                     type="text"
-                    value={"2990.00"}
+                    value={"2,000.00"}
                     style={{
                       textAlign: "left",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       color: "black",
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
@@ -1466,19 +1452,16 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       marginLeft: "40px",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '10px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "10px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
               </tr>
-              <tr>
-
-
-              </tr>
+              <tr></tr>
               <tr>
                 <td
                   colSpan={15}
@@ -1493,18 +1476,19 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       color: "black",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
                 <td
-                  colSpan={5}
+                  colSpan={4}
                   style={{
                     fontSize: "62.5%",
+
                     borderRight: "1px solid black",
                   }}
                 >
@@ -1513,14 +1497,14 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     value={"50.00"}
                     style={{
                       textAlign: "left",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       color: "black",
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
@@ -1532,18 +1516,20 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                 >
                   <input
                     type="text"
-                    value={"1. Full refund of tuition fee - Before the start of classes"}
+                    value={
+                      "1. Full refund of tuition fee - Before the start of classes"
+                    }
                     style={{
                       textAlign: "left",
                       color: "black",
                       marginLeft: "40px",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '10px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "10px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
@@ -1562,18 +1548,19 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       color: "black",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
                 <td
-                  colSpan={5}
+                  colSpan={4}
                   style={{
                     fontSize: "62.5%",
+
                     borderRight: "1px solid black",
                   }}
                 >
@@ -1582,37 +1569,39 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     value={"50.00"}
                     style={{
                       textAlign: "left",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       color: "black",
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
                 <td
-                  colSpan={15}
+                  colSpan={18}
                   style={{
                     fontSize: "62.5%",
                   }}
                 >
                   <input
                     type="text"
-                    value={"2. 80% refund of tuition fee - within 1 week from the start of classes"}
+                    value={
+                      "2. 80% refund of tuition fee - within 1 week from the start of classes"
+                    }
                     style={{
                       textAlign: "left",
                       color: "black",
                       marginLeft: "40px",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '10px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "10px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
@@ -1631,18 +1620,19 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       color: "black",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
                 <td
-                  colSpan={5}
+                  colSpan={4}
                   style={{
                     fontSize: "62.5%",
+
                     borderRight: "1px solid black",
                   }}
                 >
@@ -1651,14 +1641,14 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     value={"80.00"}
                     style={{
                       textAlign: "left",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       color: "black",
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
@@ -1670,18 +1660,20 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                 >
                   <input
                     type="text"
-                    value={"3. 50% refund - within 2 weeks from the start of classes."}
+                    value={
+                      "3. 50% refund - within 2 weeks from the start of classes."
+                    }
                     style={{
                       textAlign: "left",
                       color: "black",
                       marginLeft: "40px",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '10px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "10px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
@@ -1700,18 +1692,19 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       color: "black",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
                 <td
-                  colSpan={5}
+                  colSpan={4}
                   style={{
                     fontSize: "62.5%",
+
                     borderRight: "1px solid black",
                   }}
                 >
@@ -1720,14 +1713,14 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     value={"30.00"}
                     style={{
                       textAlign: "left",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       color: "black",
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
@@ -1746,11 +1739,11 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       marginLeft: "40px",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '10px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "10px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
@@ -1769,18 +1762,19 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       color: "black",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
                 <td
-                  colSpan={5}
+                  colSpan={4}
                   style={{
                     fontSize: "62.5%",
+
                     borderRight: "1px solid black",
                   }}
                 >
@@ -1790,18 +1784,16 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     style={{
                       textAlign: "left",
                       color: "black",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
-
-
               </tr>
               <tr>
                 <td
@@ -1816,19 +1808,20 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     style={{
                       color: "black",
                       width: "98%",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
                 <td
-                  colSpan={5}
+                  colSpan={4}
                   style={{
                     fontSize: "62.5%",
+
                     borderRight: "1px solid black",
                   }}
                 >
@@ -1840,11 +1833,11 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       color: "black",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
@@ -1862,11 +1855,11 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       textAlign: "center",
                       color: "black",
                       width: "98%",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
@@ -1885,18 +1878,19 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       color: "black",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
                 <td
-                  colSpan={5}
+                  colSpan={4}
                   style={{
                     fontSize: "62.5%",
+
                     borderRight: "1px solid black",
                   }}
                 >
@@ -1908,11 +1902,11 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       color: "black",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
@@ -1922,14 +1916,13 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     textAlign: "center",
                     fontWeight: "bold",
                     color: "black",
-                    fontFamily: 'Arial, sans-serif',
-                    fontSize: '10px',
+                    fontFamily: "Arial, sans-serif",
+                    fontSize: "10px",
                   }}
                 >
                   "As a student of EARIST, I do solemnly promise that I will
                 </td>
               </tr>
-
               <tr>
                 <td
                   colSpan={15}
@@ -1943,20 +1936,20 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     style={{
                       color: "black",
                       width: "98%",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
-
                 <td
-                  colSpan={5}
+                  colSpan={4}
                   style={{
                     fontSize: "62.5%",
+
                     borderRight: "1px solid black",
                   }}
                 >
@@ -1968,32 +1961,30 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       color: "black",
                       width: "98%",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
-
                 <td
                   colSpan={20}
                   style={{
                     textAlign: "center",
                     fontWeight: "bold",
                     color: "black",
-                    fontFamily: 'Arial, sans-serif',
-                    fontSize: '10px',
+                    fontFamily: "Arial, sans-serif",
+                    fontSize: "10px",
                   }}
                 >
                   comply with the rules and regulations of the Institution."
                 </td>
               </tr>
-
               <tr>
                 <td
-                  colSpan={2}
+                  colSpan={1}
                   style={{
                     fontSize: "62.5%",
                     marginRight: "20px",
@@ -2007,11 +1998,10 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
-
                 <td
                   colSpan={13}
                   style={{
@@ -2027,16 +2017,16 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
-
                 <td
                   colSpan={5}
                   style={{
                     fontSize: "62.5%",
                     marginRight: "20px",
+
                     borderRight: "1px solid black",
                   }}
                 >
@@ -2049,21 +2039,18 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
               </tr>
-
               <tr>
                 <td
                   colSpan={2}
                   style={{
                     marginRight: "20px",
                   }}
-                >
-                </td>
-
+                ></td>
                 <td
                   colSpan={13}
                   style={{
@@ -2076,21 +2063,21 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     style={{
                       color: "black",
                       width: "98%",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
-
                 <td
-                  colSpan={5}
+                  colSpan={4}
                   style={{
                     fontSize: "62.5%",
                     marginRight: "20px",
+
                     borderRight: "1px solid black",
                   }}
                 >
@@ -2101,26 +2088,23 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       textAlign: "left",
                       color: "black",
                       width: "98%",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
               </tr>
-
               <tr>
                 <td
                   colSpan={2}
                   style={{
                     marginRight: "20px",
                   }}
-                >
-                </td>
-
+                ></td>
                 <td
                   colSpan={13}
                   style={{
@@ -2133,21 +2117,21 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     style={{
                       color: "black",
                       width: "98%",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
-
                 <td
-                  colSpan={5}
+                  colSpan={4}
                   style={{
                     fontSize: "62.5%",
                     marginRight: "20px",
+
                     borderRight: "1px solid black",
                   }}
                 >
@@ -2158,26 +2142,23 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       textAlign: "left",
                       color: "black",
                       width: "98%",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
               </tr>
-
               <tr>
                 <td
                   colSpan={2}
                   style={{
                     marginRight: "20px",
                   }}
-                >
-                </td>
-
+                ></td>
                 <td
                   colSpan={13}
                   style={{
@@ -2190,18 +2171,17 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     style={{
                       color: "black",
                       width: "98%",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
-
                 <td
-                  colSpan={5}
+                  colSpan={4}
                   style={{
                     fontSize: "62.5%",
                     marginRight: "20px",
@@ -2215,19 +2195,17 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       textAlign: "left",
                       color: "black",
                       width: "98%",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
 
-                <td
-                  colSpan={20}
-                >
+                <td colSpan={20}>
                   <input
                     type="text"
                     value={"_________________________________"}
@@ -2235,27 +2213,24 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       color: "black",
                       textAlign: "center",
                       fontWeight: "bold",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       textDecoration: "underline",
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
               </tr>
-
               <tr>
                 <td
                   colSpan={2}
                   style={{
                     marginRight: "20px",
                   }}
-                >
-                </td>
-
+                ></td>
                 <td
                   colSpan={13}
                   style={{
@@ -2264,25 +2239,25 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                 >
                   <input
                     type="text"
-                    value={"Credit Memo: "}
+                    value={"Credit Memo : "}
                     style={{
                       color: "black",
                       width: "98%",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
-
                 <td
-                  colSpan={5}
+                  colSpan={4}
                   style={{
                     fontSize: "62.5%",
                     marginRight: "20px",
+
                     borderRight: "1px solid black",
                   }}
                 >
@@ -2293,37 +2268,220 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       textAlign: "left",
                       color: "black",
                       width: "98%",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
 
-                <td
-                  colSpan={20}
-                >
+                <td colSpan={20}>
                   <input
                     type="text"
                     value={"Student's Signature"}
                     style={{
                       color: "black",
                       textAlign: "center",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
               </tr>
               <tr>
+                <td
+                  colSpan={2}
+                  style={{
+                    marginRight: "20px",
+                  }}
+                ></td>
+                <td
+                  colSpan={13}
+                  style={{
+                    fontSize: "62.5%",
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={"Total Discount : "}
+                    style={{
+                      color: "black",
+                      width: "98%",
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      border: "none",
+                      outline: "none",
+                      background: "none",
+                    }}
+                  />
+                </td>
+                <td
+                  colSpan={4}
+                  style={{
+                    fontSize: "62.5%",
+                    marginRight: "20px",
+
+                    borderRight: "1px solid black",
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={"0.00"}
+                    style={{
+                      textAlign: "left",
+                      color: "black",
+                      width: "98%",
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      border: "none",
+                      outline: "none",
+                      background: "none",
+                    }}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td
+                  colSpan={2}
+                  style={{
+                    marginRight: "20px",
+                  }}
+                ></td>
+                <td
+                  colSpan={13}
+                  style={{
+                    fontSize: "62.5%",
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={"Total Payment : "}
+                    style={{
+                      color: "black",
+                      width: "98%",
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      border: "none",
+                      outline: "none",
+                      background: "none",
+                    }}
+                  />
+                </td>
+                <td
+                  colSpan={4}
+                  style={{
+                    fontSize: "62.5%",
+                    marginRight: "20px",
+
+                    borderRight: "1px solid black",
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={"0.00"}
+                    style={{
+                      textAlign: "left",
+                      color: "black",
+                      width: "98%",
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      border: "none",
+                      outline: "none",
+                      background: "none",
+                    }}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td
+                  colSpan={2}
+                  style={{
+                    marginRight: "20px",
+                  }}
+                ></td>
+                <td
+                  colSpan={13}
+                  style={{
+                    fontSize: "62.5%",
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={"Outstanding Balance : "}
+                    style={{
+                      color: "black",
+                      width: "98%",
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      border: "none",
+                      outline: "none",
+                      background: "none",
+                    }}
+                  />
+                </td>
+                <td
+                  colSpan={4}
+                  style={{
+                    fontSize: "62.5%",
+                    marginRight: "20px",
+
+                    borderRight: "1px solid black",
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={"0.00"}
+                    style={{
+                      textAlign: "left",
+                      color: "black",
+                      width: "98%",
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      border: "none",
+                      outline: "none",
+                      background: "none",
+                    }}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td
+                  colSpan={19}
+                  style={{
+                    fontSize: "62.5%",
+                    border: "1px solid black",
+                    backgroundColor: "gray",
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={"S C H E D U L E  O F  P A Y M E N T"}
+                    style={{
+                      color: "black",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      width: "98%",
+                      border: "none",
+                      outline: "none",
+                      background: "none",
+                    }}
+                  />
+                </td>
+
                 <td
                   colSpan={7}
                   style={{
@@ -2341,12 +2499,12 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
                 <td
-                  colSpan={13}
+                  colSpan={8}
                   style={{
                     fontSize: "55%",
                     textAlign: "center",
@@ -2361,7 +2519,6 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       alignItems: "center",
                       overflow: "hidden",
                       position: "relative",
-
                     }}
                   >
                     {uploadedSignature ? (
@@ -2389,7 +2546,6 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     )}
                   </div>
 
-
                   {/* Hidden File Input */}
                   <input
                     id="signatureUpload"
@@ -2402,7 +2558,6 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                   />
                 </td>
               </tr>
-
               <tr>
                 <td
                   colSpan={7}
@@ -2417,13 +2572,13 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     style={{
                       color: "black",
                       textAlign: "center",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
@@ -2440,17 +2595,17 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       color: "black",
                       textAlign: "center",
                       fontWeight: "bold",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
                 <td
-                  colSpan={7}
+                  colSpan={6}
                   style={{
                     border: "1px solid black",
                   }}
@@ -2462,12 +2617,12 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       color: "black",
                       textAlign: "center",
                       fontWeight: "bold",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
@@ -2484,18 +2639,17 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       color: "black",
                       textAlign: "center",
                       fontWeight: "bold",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       textDecoration: "underline",
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
               </tr>
-
               <tr>
                 <td
                   colSpan={7}
@@ -2514,11 +2668,10 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
-
                 <td
                   colSpan={6}
                   style={{
@@ -2528,7 +2681,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                 >
                   <input
                     type="text"
-                    value={"0.0"}
+                    value={"0.00"}
                     style={{
                       color: "black",
                       textAlign: "center",
@@ -2536,13 +2689,12 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
-
                 <td
-                  colSpan={7}
+                  colSpan={6}
                   style={{
                     fontSize: "62.5%",
                     border: "1px solid black",
@@ -2550,7 +2702,7 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                 >
                   <input
                     type="text"
-                    value={"0.0"}
+                    value={"0.00"}
                     style={{
                       color: "black",
                       textAlign: "center",
@@ -2558,11 +2710,10 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       fontWeight: "bold",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
-
                 <td
                   colSpan={20}
                   style={{
@@ -2577,17 +2728,15 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       textAlign: "center",
                       width: "98%",
                       fontWeight: "bold",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       border: "none",
-                      fontWeight: "bold",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
               </tr>
-
               <tr>
                 <td
                   colSpan={12}
@@ -2600,18 +2749,17 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     value={"Payment/Validation Date : "}
                     style={{
                       color: "black",
-                      textAlign: "center",
+                      textAlign: "ledt",
                       width: "98%",
                       fontWeight: "bold",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
-
                 <td
                   colSpan={7}
                   style={{
@@ -2625,19 +2773,18 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     style={{
                       textDecoration: "underline",
                       color: "black",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       fontWeight: "bold",
                       textAlign: "center",
                       width: "98%",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
               </tr>
-
               <tr>
                 <td
                   colSpan={12}
@@ -2650,18 +2797,17 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     value={"Official Receipt :"}
                     style={{
                       color: "black",
-                      textAlign: "center",
+                      textAlign: "left",
                       width: "98%",
                       fontWeight: "bold",
                       border: "none",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
-
                 <td
                   colSpan={7}
                   style={{
@@ -2676,22 +2822,29 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                       textAlign: "center",
                       width: "98%",
                       fontWeight: "bold",
-                      fontFamily: 'Arial, sans-serif',
-                      fontSize: '12px',
+                      fontFamily: "Arial, sans-serif",
+                      fontSize: "12px",
                       border: "none",
                       outline: "none",
-                      background: "none"
+                      background: "none",
                     }}
                   />
                 </td>
               </tr>
-
               <tr>
                 <td style={{ width: "20%", textAlign: "center" }}>
-                  <img src={FreeTuitionImage} alt="EARIST MIS FEE" style={{ marginTop: "10px", width: "200px", height: "150px", marginLeft: "150px" }} />
+                  <img
+                    src={FreeTuitionImage}
+                    alt="EARIST MIS FEE"
+                    style={{
+                      marginTop: "10px",
+                      width: "200px",
+                      height: "150px",
+                      marginLeft: "150px",
+                    }}
+                  />
                 </td>
               </tr>
-
               <tr>
                 <td
                   colSpan={40}
@@ -2699,14 +2852,13 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                     height: "0.25in",
                     fontSize: "62.5%",
                     textAlign: "right",
-                    textAlign: "right",
                     verticalAlign: "middle", // Centers vertically
                   }}
                 >
                   <input
                     type="text"
                     value={currentDate}
-                    readOnly
+                    
                     style={{
                       color: "black",
                       textAlign: "right", // Centers text inside the input
@@ -2718,7 +2870,6 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                   />
                 </td>
               </tr>
-
               <tr>
                 <td
                   colSpan={40}
@@ -2730,24 +2881,27 @@ const filteredData = data.filter((item) => String(item.employeeID) === String(em
                   }}
                 >
                   <b>
-                    <i style={{ color: "black", textAlign: "center", display: "block" }}>
-                      KEEP THIS CERTIFICATE. YOU WILL BE REQUIRED TO PRESENT THIS IN ALL YOUR DEALINGS WITH THE COLLEGE.
+                    <i
+                      style={{
+                        color: "black",
+                        textAlign: "center",
+                        display: "block",
+                      }}
+                    >
+                      KEEP THIS CERTIFICATE. YOU WILL BE REQUIRED TO PRESENT
+                      THIS IN ALL YOUR DEALINGS WITH THE COLLEGE.
                     </i>
                   </b>
                 </td>
               </tr>
-
             </tbody>
-
           </table>
-
         </form>
       </div>
     </div>
-
-
   );
 };
 
-
 export default CertificateOfRegistration;
+
+
